@@ -1,0 +1,104 @@
+/* Apply Apple-like system font stack */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+/* Custom scrollbar for notes list */
+.notes-list::-webkit-scrollbar { width: 6px; }
+.notes-list::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+.notes-list::-webkit-scrollbar-thumb { background: #cccccc; border-radius: 10px; }
+.notes-list::-webkit-scrollbar-thumb:hover { background: #aaaaaa; }
+
+/* Style for the active note */
+.note-item.active { background-color: #fde047; /* Tailwind yellow-300 */ }
+
+/* Ensure editor panel fills height */
+.editor-panel { display: flex; flex-direction: column; height: 100%; }
+
+/* Make content area (text + canvas) scrollable if needed */
+.note-content-area { flex-grow: 1; overflow-y: auto; position: relative; /* Needed for overlay positioning */ }
+
+/* Style for the contenteditable text area */
+#note-text-editor {
+    min-height: 100px; /* Minimum height for text */
+    padding: 12px;
+    outline: none;
+    border-bottom: 1px solid #fde68a; /* yellow-200 */
+    line-height: 1.6;
+    background-color: #fefce8; /* Slightly off-white yellow for text area */
+}
+#note-text-editor:empty:before {
+    content: attr(placeholder);
+    color: #a1a1aa; /* gray-400 */
+    pointer-events: none;
+}
+/* Ensure text editor is visible even when disabled */
+ #note-text-editor[contenteditable="false"] {
+     background-color: #fefce8; /* Keep background consistent */
+     color: #78716c; /* stone-500 */
+ }
+
+
+/* Canvas styling */
+#note-canvas {
+    display: block; /* Remove extra space below canvas */
+    cursor: crosshair; /* Default cursor for drawing */
+    background-color: #fffbeb; /* Lighter yellow for canvas bg */
+    touch-action: none; /* Prevent scrolling on touch devices while drawing */
+    width: 100%; /* Ensure canvas tries to take full width */
+}
+
+/* Drawing toolbar styles */
+.drawing-tool {
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: inline-flex; /* Align items nicely */
+    align-items: center;
+    border: 1px solid transparent; /* Placeholder for active state */
+}
+.drawing-tool:hover { background-color: #e5e7eb; /* gray-200 */ }
+.drawing-tool.active { background-color: #d1d5db; /* gray-300 */ border-color: #9ca3af; /* gray-400 */}
+.drawing-tool input[type="color"] {
+    width: 24px; height: 24px; padding: 0; border: none; cursor: pointer; vertical-align: middle; background: none;
+}
+ /* Style the color picker wrapper */
+.color-picker-wrapper {
+    border: 1px solid #d1d5db; /* gray-300 */
+    padding: 2px;
+    border-radius: 4px;
+    display: inline-block; /* Fit content */
+    vertical-align: middle;
+}
+.drawing-tool input[type="range"] {
+    cursor: pointer; vertical-align: middle;
+}
+
+/* Simple modal styles */
+.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
+.modal-content { background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 400px; border-radius: 8px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+.modal-close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 1; }
+.modal-close:hover, .modal-close:focus { color: black; text-decoration: none; cursor: pointer; }
+.modal button { margin-top: 10px; }
+
+/* Disable interaction when no note is selected */
+.disabled-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    /* Adjust background to be slightly less intrusive */
+    background-color: rgba(241, 245, 249, 0.6); /* slate-100 with opacity */
+    z-index: 50; /* Above content, below modal */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b; /* slate-500 */
+    font-style: italic;
+    pointer-events: none; /* Allow clicks to pass through if needed, though it covers everything */
+    border-radius: 0 0 8px 8px; /* Match potential parent rounding */
+}
+ /* Hide overlay when editor is active */
+ .editor-active .disabled-overlay {
+     display: none;
+ }
